@@ -1,59 +1,44 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <yandex-map @map-was-initialized="map = $event" ref="map" @click="addPoint" :coords="coords">
+      <template v-for="(e,i) in points">
+            <ymap-marker @click="edit(e)" :key="i" v-if="!e.hide" :marker-fill="e.fill" :marker-stroke="e.stroke" :coords="e.coords" :circle-radius="circleRadius(e.type,e.coords)" :marker-type="e.type" :marker-id="i" :hint-content="e.hint" />
+      </template>
+      <ymap-marker ref="marker" :coords="form.markerData" :circle-radius="circleRadius(form.type,form.markerData)" :marker-fill="form.fill" :marker-stroke="form.stroke" :marker-type="form.type" :marker-id="-1" :hint-content="form.hint" />
+  </yandex-map>
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex'
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
-</script>
+    name: "HelloWorld",
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+    data: () => ({
+        map: null,
+        marker: false
+    }),
+    methods: {
+        addPoint(e) {
+            this.setCoords(e.get("coords"));
+        },
+        circleRadius(type, coords){
+            if (coords&&coords.length>2&&type == "Circle") return coords[2]
+        },
+        edit(data){
+            data.hide = true;
+            this.$store.state.form.type = data.type;
+            this.$store.state.form.name = data.name
+            this.$store.state.form.hint = data.hint
+            this.$store.state.form.markerData = data.coords
+        },
+        ...mapMutations(["setCoords"]),
+    },
+    computed:{
+        ...mapState(["coords", "points", "form"]),
+    }
+};
+</script>
+<style lang="scss" scoped>
+.ymap-container {
+    height: 100%;
 }
 </style>
