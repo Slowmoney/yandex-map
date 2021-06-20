@@ -22,7 +22,7 @@ export default {
     data: ()=>({
         index: 0
     }),
-    mounted(){;
+    mounted(){
         this.$emit('input', [[this.coords[0]-0.001, this.coords[1]-0.001], [this.coords[0]+0.001, this.coords[1]+0.001]])
     },
     computed:{

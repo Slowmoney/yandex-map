@@ -11,7 +11,7 @@ export default new Vuex.Store({
             name: "",
             type: "Placemark",
             hint: "",
-            markerData: [55.69051894039127, 37.654947679083044],
+            coords: [55.69051894039127, 37.654947679083044],
             fill: { enable: true, color: "#F000000F"},
             stroke: { enable: true, color: "#F000000F"},
         }
@@ -25,7 +25,7 @@ export default new Vuex.Store({
             state.form.type = "Placemark";
             state.form.name = ""
             state.form.hint = ""
-            state.form.markerData = state.coords
+            state.form.coords = state.coords
         }
     },
     actions: {

@@ -20,7 +20,7 @@
               <v-text-field type="text" v-model="$store.state.form.hint" label="Подсказка" required></v-text-field>
             </v-col>
             <v-col cols="12" style="max-height: 400px;overflow-y: auto;">
-              <component v-model="$store.state.form.markerData" :is="getMarkerComponent($store.state.form.type)"></component>
+              <component v-model="$store.state.form.coords" :is="getMarkerComponent($store.state.form.type)"></component>
             </v-col>
             <v-col cols="12" md="8" v-show="['Polygon', 'Rectangle', 'Circle', 'Polyline'].includes($store.state.form.type)">
               <v-row>
@@ -146,7 +146,7 @@ export default {
                 name: this.$store.state.form.name,
                 type: this.$store.state.form.type,
                 hint: this.$store.state.form.hint,
-                coords: Array.from(this.$store.state.form.markerData),
+                coords: Array.from(this.$store.state.form.coords),
                 fill: Object.assign({},this.$store.state.form.fill),
                 stroke: Object.assign({},this.$store.state.form.stroke),
                 color: "",

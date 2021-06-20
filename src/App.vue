@@ -11,20 +11,20 @@
     </v-app-bar>
     <Form ref="form"></Form>
     <v-main>
-      <HelloWorld />
+      <Map />
     </v-main>
   </v-app>
 </template>
 
 <script>
 import Form from './components/Form.vue';
-import HelloWorld from "./components/HelloWorld";
+import Map from "./components/Map";
 
 export default {
     name: "App",
 
     components: {
-        HelloWorld,
+        Map,
         Form,
     },
 
